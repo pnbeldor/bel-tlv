@@ -59,7 +59,7 @@ std::vector<uint8_t> TLV::Serialize() const
     result.push_back(static_cast<uint16_t>(type_) & 0xFF);
     
     // Length (2 bytes)
-    uint16_t length = value_.size();
+    uint16_t length = static_cast<uint16_t>(value_.size());
     result.push_back((length >> 8) & 0xFF);
     result.push_back(length & 0xFF);
     
