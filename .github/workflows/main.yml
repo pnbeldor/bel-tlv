@@ -33,7 +33,7 @@ jobs:
       with:
         submodules: true # If GoogleTest is a submodule
 
-    - name: Install dependencies (Windows)
+    #- name: Install dependencies (Windows)
       # Visual Studio and CMake are usually pre-installed on windows-latest runners
       # You might need to add steps to install specific versions if required.
 
