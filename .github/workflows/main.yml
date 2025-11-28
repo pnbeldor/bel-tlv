@@ -1,0 +1,47 @@
+name: CMake GoogleTest CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build-and-test-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true # If GoogleTest is a submodule
+
+    - name: Install dependencies (Ubuntu)
+      run: sudo apt-get update && sudo apt-get install -y cmake build-essential
+
+    - name: Configure CMake (Ubuntu)
+      run: cmake -B build
+
+    - name: Build (Ubuntu)
+      run: cmake --build build
+
+    - name: Run Tests (Ubuntu)
+      run: ctest --test-dir build
+
+  build-and-test-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true # If GoogleTest is a submodule
+
+    - name: Install dependencies (Windows)
+      # Visual Studio and CMake are usually pre-installed on windows-latest runners
+      # You might need to add steps to install specific versions if required.
+
+    - name: Configure CMake (Windows)
+      run: cmake -B build
+
+    - name: Build (Windows)
+      run: cmake --build build
+
+    - name: Run Tests (Windows)
+      run: ctest --test-dir build
