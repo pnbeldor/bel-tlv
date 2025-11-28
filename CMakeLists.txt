@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(googletest)
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|clang")
     #add_compile_options(-Wall -Werror -Wextra -Wpedantic -Wconversion)
     add_compile_options(-Wall -Werror -Wextra -Wpedantic)
-elseif(CMAKE_CXX_COMPILER_ID STREEQUAL "MSVC")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(/W4 /WX)    
 endif()
 
