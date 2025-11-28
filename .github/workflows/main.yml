@@ -7,61 +7,49 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build-and-test-ubuntu:
-    runs-on: ubuntu-latest
+  build:
+    # Used the matrix strategy to build on multiple operating systems
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+      #build-and-test-ubuntu:
+    runs-on: ${{ matrix.os }}
+
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true # If GoogleTest is a submodule
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      #with:
+      #  submodules: true # If GoogleTest is a submodule
 
-    - name: Install dependencies (Ubuntu)
-      run: sudo apt-get update && sudo apt-get install -y cmake build-essential
+      - name: Install dependencies (MacOS only)
+        if: matrix.os == 'macos-latest'
+        run: brew install cmake
 
-    - name: Setup CMake and Ninja
-      uses: ashutoshvarma/setup-ninja@master # This action also installs CMake
-      with:
-        version: 1.13.1 # Specify Ninja version 1.13.1
+      - name: Install dependencies (Linux only)
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get update && sudo apt-get install -y cmake build-essential
 
-    - name: Set up CMake
-      uses: jwlawson/actions-setup-cmake@v1.14 # Use a specific version for stability
-      with:
-        cmake-version: 4.1.1
+      - name: Setup CMake and Ninja
+        uses: ashutoshvarma/setup-ninja@master # This action also installs CMake
+        with:
+          version: 1.13.1 # Specify Ninja version 1.13.1
 
-    - name: Set reusable strings
-      id: strings
-      shell: bash
-      run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1.14 # Use a specific version for stability
+        with:
+          cmake-version: 4.1.1
 
-    - name: Configure CMake (Ubuntu) -DBUILD_TESTING=ON
-      run: cmake -B build
+      - name: Set reusable strings
+        id: strings
+        shell: bash
+        run: |
+          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Build (Ubuntu)
-      run: cmake --build build --parallel 4
+      - name: Configure CMake
+        run: cmake -B build -G Ninja -DBUILD_TESTING=ON
 
-    - name: Run Tests (Ubuntu)
-      run: ctest --test-dir build --output-on-failure --parallel 4
+      - name: Build
+        run: cmake --build build --parallel 4
 
-  build-and-test-windows:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true # If GoogleTest is a submodule
-
-    - name: Install dependencies (Windows) Set up CMake
-      uses: jwlawson/actions-setup-cmake@v1.14 # Use a specific version for stability
-      with:
-        cmake-version: 4.1.1
-    # name: Install dependencies (Windows)
-      # Visual Studio and CMake are usually pre-installed on windows-latest runners
-      # You might need to add steps to install specific versions if required.
-
-    - name: Configure CMake (Windows)
-      run: cmake -B build
-
-    - name: Build (Windows)
-      run: cmake --build build
-
-    - name: Run Tests (Windows)
-      run: ctest --test-dir build
+      - name: Run Tests
+        run: ctest --test-dir build --verbose --output-on-failure --parallel 4
