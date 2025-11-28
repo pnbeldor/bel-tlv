@@ -9,6 +9,7 @@ Date: 11/20/2025
 
 #include <cstdint>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -100,7 +101,7 @@ public:
         }
         
         // Serialize length
-        uint16_t length = value_data.size();
+        uint16_t length = static_cast<uint16_t>(value_data.size());
         result.push_back((length >> 8) & 0xFF);
         result.push_back(length & 0xFF);
         
