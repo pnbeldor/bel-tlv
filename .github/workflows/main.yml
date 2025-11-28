@@ -17,14 +17,30 @@ jobs:
     - name: Install dependencies (Ubuntu)
       run: sudo apt-get update && sudo apt-get install -y cmake build-essential
 
-    - name: Configure CMake (Ubuntu)
+    - name: Setup CMake and Ninja
+      uses: ashutoshvarma/setup-ninja@master # This action also installs CMake
+      with:
+        version: 1.13.1 # Specify Ninja version 1.13.1
+
+    - name: Set up CMake
+      uses: jwlawson/actions-setup-cmake@v1.14 # Use a specific version for stability
+      with:
+        cmake-version: 4.1.1
+
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - name: Configure CMake (Ubuntu) -DBUILD_TESTING=ON
       run: cmake -B build
 
     - name: Build (Ubuntu)
-      run: cmake --build build
+      run: cmake --build build --parallel 4
 
     - name: Run Tests (Ubuntu)
-      run: ctest --test-dir build
+      run: ctest --test-dir build --output-on-failure --parallel 4
 
   build-and-test-windows:
     runs-on: windows-latest
@@ -33,7 +49,11 @@ jobs:
       with:
         submodules: true # If GoogleTest is a submodule
 
-    - name: Install dependencies (Windows)
+    - name: Install dependencies (Windows) Set up CMake
+      uses: jwlawson/actions-setup-cmake@v1.14 # Use a specific version for stability
+      with:
+        cmake-version: 4.1.1
+    # name: Install dependencies (Windows)
       # Visual Studio and CMake are usually pre-installed on windows-latest runners
       # You might need to add steps to install specific versions if required.
 
