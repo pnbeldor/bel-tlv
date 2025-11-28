@@ -19,7 +19,7 @@ class TLV
 {
 public:
     static std::unique_ptr<TLV> CreateString(const std::string& value);
-    static std::unique_ptr<TLV> CreateInteger(uint32_t value);
+    static std::unique_ptr<TLV> CreateInteger(int32_t value);
     static std::unique_ptr<TLV> CreateBool(bool value);
     static std::unique_ptr<TLV> CreateRaw(Type type, const std::vector<uint8_t>& value);
 

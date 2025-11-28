@@ -34,7 +34,7 @@ std::unique_ptr<TLV> TLV::CreateString(const std::string& value)
     return std::make_unique<TLV>(Type::STRING, value);
 }
 
-std::unique_ptr<TLV> TLV::CreateInteger(uint32_t value)
+std::unique_ptr<TLV> TLV::CreateInteger(int32_t value)
 {
     return std::make_unique<TLV>(Type::INTEGER, value);
 }
