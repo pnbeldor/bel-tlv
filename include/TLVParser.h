@@ -1,6 +1,8 @@
 #ifndef __TLVPARSER_H__
 #define __TLVPARSER_H__
 
+#include <stdexcept>
+
 #include "TLV.h"
 
 class TLVParser {
