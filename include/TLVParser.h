@@ -3,13 +3,13 @@
 
 #include <stdexcept>
 
-#include "TLV.h"
+#include "AdvancedTLV.h"
 
 class TLVParser {
 public:
     TLVParser();
     virtual ~TLVParser();
-    static std::unique_ptr<TLV> Parse(const std::vector<uint8_t>& data, size_t& offset) {
+    static std::unique_ptr<AdvancedTLV> Parse(const std::vector<uint8_t>& data, size_t& offset) {
         if (offset + 4 > data.size()) {
             throw std::runtime_error("Insufficient data for TLV header");
         }
@@ -31,11 +31,11 @@ public:
         std::vector<uint8_t> value(data.begin() + offset, data.begin() + offset + length);
         offset += length;
         
-        return std::make_unique<TLV>(type, value);
+        return std::make_unique<AdvancedTLV>(type, value);
     }
     
-    static std::vector<std::unique_ptr<TLV>> ParseMultiple(const std::vector<uint8_t>& data) {
-        std::vector<std::unique_ptr<TLV>> result;
+    static std::vector<std::unique_ptr<AdvancedTLV>> ParseMultiple(const std::vector<uint8_t>& data) {
+        std::vector<std::unique_ptr<AdvancedTLV>> result;
         size_t offset = 0;
         
         while (offset < data.size()) {

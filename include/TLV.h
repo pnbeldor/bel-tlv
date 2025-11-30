@@ -32,11 +32,11 @@ public:
     std::string AsString() const;
     bool AsBoolean() const;
 
-//private:
+    std::string TypeToString(Type type);
+
     TLV(Type type, const std::vector<uint8_t>& value);
     TLV(Type type, const std::string& value);
     explicit TLV(Type type, int32_t intValue);
-    //explicit TLV(Type type, bool boolValue);
 
 private:
     Type type_;

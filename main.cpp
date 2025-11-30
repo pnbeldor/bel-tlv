@@ -3,14 +3,32 @@
 #include "TLV.h"
 #include "TLVParser.h"
 #include "AdvancedTLV.h"
+#include "TLVUtils.h"
 
-void basicExample() {
+void SimpleExamples()
+{
+    TLVUtils utils;
+    std::cout << "\n=== Simple Examples ===" << std::endl;
+    
+    // Quick dumps without verbose mode
+    TLV simple_int(Type::INTEGER, 255);
+    std::cout << utils.HEXDumpTLV(simple_int) << std::endl;
+    
+    TLV simple_str(Type::STRING, "test");
+    std::cout << utils.HEXDumpTLV(simple_str) << std::endl;
+    
+    auto simple_advanced = AdvancedTLV::CreateInteger(42);
+    std::cout << utils.HEXDumpAdvancedTLV(*simple_advanced) << std::endl;
+}
+
+void basicExample()
+{
     std::cout << "=== Basic TLV Example ===" << std::endl;
     
     // Create TLV objects
-    auto integer_tlv = TLV::CreateInteger(42);
-    auto string_tlv = TLV::CreateString("Hello, TLV! Hello, TLV!Hello, TLV! Hello, TLV! Hello, TLV! Hello, TLV! Hello, TLV!Hello, TLV! Hello, TLV! Hello, TLV! Hello, TLV! Hello, TLV!Hello, TLV! Hello, TLV! Hello, TLV!");
-    auto bool_tlv = TLV::CreateBool(true);
+    auto integer_tlv = AdvancedTLV::CreateInteger(42);
+    auto string_tlv = AdvancedTLV::CreateString("Hello, TLV! Hello, TLV!Hello, TLV! Hello, TLV! Hello, TLV! Hello, TLV! Hello, TLV!Hello, TLV! Hello, TLV! Hello, TLV! Hello, TLV! Hello, TLV!Hello, TLV! Hello, TLV! Hello, TLV!");
+    auto bool_tlv = AdvancedTLV::CreateBoolean(true);
     
     // Serialize
     auto integer_data = integer_tlv->Serialize();
@@ -22,7 +40,8 @@ void basicExample() {
     std::cout << "Boolean TLV size: " << bool_data.size() << " bytes" << std::endl;
 }
 
-void advancedExample() {
+void advancedExample()
+{
     std::cout << "\n=== Advanced TLV Example ===" << std::endl;
     
     // Create a nested structure
@@ -92,6 +111,7 @@ void parsingExample() {
 }
 
 int main() {
+    SimpleExamples();
     basicExample();
     advancedExample();
     arrayExample();
