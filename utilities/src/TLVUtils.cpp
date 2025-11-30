@@ -5,6 +5,7 @@ author: Pierre Nicolson Beldor
 date: 11/20/2025
 ------------------------------------------ */
 #include <iostream>
+#include <sstream>
 #include <iomanip>
 
 #include "TLVUtils.h"
