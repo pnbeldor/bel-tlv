@@ -26,7 +26,7 @@ FetchContent_MakeAvailable(googletest)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     # using regular Clang or AppleClang
-    add_compile_options(-Wall -Wconversion -Wshadow -Werror=conversion -Werror=sign-compare)
+    add_compile_options(-Wall -Wconversion -Wshadow -Werror=conversion -Werror=sign-compare -Wno-implicit-int-conversion)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     #add_compile_options(-Wall -Werror -Wextra -Wpedantic -Wconversion)
     add_compile_options(-Wall -Werror -Wshadow -Wextra -Wpedantic)
